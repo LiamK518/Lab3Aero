@@ -9,8 +9,8 @@ t=27;
 c=100;
 
 
-if i<p*c
-    yc(i)=m*i*(2*p-(i/c))/p/p;
+if x<p*c
+    yc(i)=m*x*(2*p-(x/c))/p/p;
 else
     yc(i)=m*(c-x)*(1+(x/c)-(2*p))/(1-p)/(1-p);
 end
