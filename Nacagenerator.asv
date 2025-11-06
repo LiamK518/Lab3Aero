@@ -29,15 +29,16 @@ xu = x - yt .*sin(xzi);
 xl = x + yt .*sin(xzi);
 yu = yc + yt.*cos(xzi);
 yl = yc - yt.*cos(xzi);
-xu2 = xu(2:end);
-yu2 = yu(2:end);
-
+xu2 = xu(2,:);
+yu2 = yu
+xu2 = fliplr(xu);
 xl2 = fliplr(xl);
+yu2 = fliplr(yu);
 yl2 = fliplr(yl);
 %combine 
 % Combine upper and lower surfaces into a single array for vortex panel method
-XB = [xl2,xu2]; 
-YB = [yl2,yu2];
+XB = [xl2,xu]; 
+YB = [yl2,yu];
 plot(XB,YB);
 axis equal
 Cl = Vortex_Panel(XB,YB,5);
