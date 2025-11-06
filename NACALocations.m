@@ -3,10 +3,10 @@ clear
 close all
 
 NACA=1327;
-m=1
-p=3
-t=27
-c=100
+m=1;
+p=3;
+t=27;
+c=100;
 
 
 if x<p*c
