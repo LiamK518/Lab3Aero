@@ -2,7 +2,7 @@
 clc 
 clear all
 close
-NacaStrings = ["NACA0018","NACA2418"];
+NacaStrings = ["NACA0018","NACA2418", "NACA0018"];
 
 r = 1;
 for j = 1:length(NacaStrings)
@@ -10,12 +10,11 @@ for j = 1:length(NacaStrings)
 
 currentnaca = char(NacaStrings(j));
 m = str2double(currentnaca(5)) / 100;
-p = str2double(currentnaca(6))/ 10;
+p = str2double(currentnaca(6))/ 100;
 t = str2double(currentnaca(7:end)) / 100;
-c = 1;
+c = 100;
 [XB,YB]= Locations(m,p,t,c,currentnaca,r);
 Cl(j) = Vortex_Panel(XB,YB,5);
-r = j + 1;
 end
 
 
@@ -50,8 +49,8 @@ yl2 = fliplr(yl);
 % Combine upper and lower surfaces into a single array for vortex panel method
 XB = [xl2,xu2]; 
 YB = [yl2,yu2];
-
-figure(r)
+index = 1 + i;
+figure(index)
 hold on;
 plot(XB,YB);
 plot(x,yc)
@@ -60,7 +59,8 @@ axis equal;
     ylabel('Y Coordinate');
     title(currentnaca)
     grid on;
-
+hold off;
+ l++
 end
 
 
