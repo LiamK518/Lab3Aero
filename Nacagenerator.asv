@@ -1,27 +1,38 @@
+
 clc 
-clear 
-close all
-NACA=0012;
-m=0/100;
-p=0 /100;
-thickness=12;
-c=100;
+clear all
+close
+NacaStrings = ["NACA0018","NACA2418", "NACA0018"];
+
+r = 1;
+for j = 1:length(NacaStrings)
+
+
+currentnaca = char(NacaStrings(j));
+m = str2double(currentnaca(5)) / 100;
+p = str2double(currentnaca(6))/ 100;
+t = str2double(currentnaca(7:end)) / 100;
+c = 100;
+[XB,YB]= Locations(m,p,t,c,currentnaca,r);
+Cl(j) = Vortex_Panel(XB,YB,5);
+end
+
+
+
+
+
+function [XB, YB] = Locations(m,p,t,c,currentnaca,r)
 x = linspace(0,c,100);
-t = thickness / 100;
-yt = (t / 0.2) * c *(0.2969 *sqrt(x/c)- .1260*(x/c)-.3515*(x/c).^2+.2843*(x/c).^3 -.1036*(x/c).^4);
-
-    
-    
+yt = (t / 0.2) * c *(0.2969 *sqrt(x/c)- .1260*(x/c)-.3515*(x/c).^2+.2843*(x/c).^3 -.1036*(x/c).^4); 
 for i = 1:length(x) 
-
     if x(i)<(p*c)
-
-    yc(i)=m*x(i)*(2*p-(x(i)/c))/p/p;
+    yc(i)=m*x(i)*(2*p-(x(i)/c))./p^2;
     xzi(i) = atan((m*(2*p - x(i)/c))./p.^2 - (m*x(i))./(c*p.^2));
     else
-    yc(i)=m*(c-x(i))*(1+(x(i)/c)-(2*p))/(1-p)/(1-p);
+    yc(i)=m*(c-x(i))*(1+(x(i)/c)-(2*p))./(1-p)^2;
     xzi(i) =atan((m*(c - x(i)))./(c*(p - 1).^2) - (m*(x(i)./c - 2*p + 1))./(p - 1)^2);
     end
+
 end
 
 %postions
@@ -29,19 +40,29 @@ xu = x - yt .*sin(xzi);
 xl = x + yt .*sin(xzi);
 yu = yc + yt.*cos(xzi);
 yl = yc - yt.*cos(xzi);
-xu2 = xu(2,:);
-yu2 = yu
-xu2 = fliplr(xu);
+xu2 = xu(2:end);
+yu2 = yu(2:end);
+
 xl2 = fliplr(xl);
-yu2 = fliplr(yu);
 yl2 = fliplr(yl);
 %combine 
 % Combine upper and lower surfaces into a single array for vortex panel method
-XB = [xl2,xu]; 
-YB = [yl2,yu];
+XB = [xl2,xu2]; 
+YB = [yl2,yu2];
+index = 1 + i;
+figure(index)
+hold on;
 plot(XB,YB);
-axis equal
-Cl = Vortex_Panel(XB,YB,5);
+plot(x,yc)
+axis equal;
+    xlabel('X Coordinate');
+    ylabel('Y Coordinate');
+    title(currentnaca)
+    grid on;
+hold off;
+ l++
+end
+
 
 
 
