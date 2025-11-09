@@ -2,28 +2,140 @@
 clc 
 clear all
 close
-NacaStrings = ["NACA0018","NACA2418"];
 
+alpha = linspace(-4,4,2000);
 r = 1;
-for j = 1:length(NacaStrings)
+ifplota = 1;
+ifplotb = 0;
 
+%% Task 1 
 
-currentnaca = char(NacaStrings(j));
-m = str2double(currentnaca(5)) / 100;
-p = str2double(currentnaca(6))/ 10;
-t = str2double(currentnaca(7:end)) / 100;
-c = 1;
-[XB,YB]= Locations(m,p,t,c,currentnaca,r);
-Cl(j) = Vortex_Panel(XB,YB,5);
-r = j + 1;
+NacaStringT1 = ["NACA 0018","NACA 2418"];
+Alpha = 5;
+for j = 1:length(NacaStringT1)
+[m,p,t,currentnaca] = AirfoilComps(NacaStringT1(j));
+c = 100;
+pannum = c;
+% m,p,t,c all naca comp
+%current naca is naca name 
+%r is a variable tracked for figures
+%pan num- number of pannels 
+%ifplot 1 = on 0 = off
+[XB,YB]= Locations(m,p,t,c,currentnaca,r,pannum,ifplota);
+Cl2(j) = Vortex_Panel(XB,YB,Alpha);
+r = r+1;
+end
+
+%% Task 2 Part 1
+Naca_Strings_T2P1 = ["NACA 0012"];
+for e = 1:length(Naca_Strings_T2P1)
+[m,p,t,currentnaca2] = AirfoilComps(Naca_Strings_T2P1(e));
+c = 100;
+[XB2,YB2]= Locations(m,p,t,c,currentnaca2,r,c,ifplotb);
+r = r+1;
+CLE = Vortex_Panel(XB2,YB2,Alpha); % Exact CL 
+
+%Varried number of pannels
+for f = 3:99
+[XB2,YB2]= Locations(m,p,t,c,currentnaca2,r,f,ifplotb);
+Cl_T2P1(f-2) = Vortex_Panel(XB2,YB2,Alpha);
+r = r+1;
+end
+for d = 1:length(Cl_T2P1)
+    if Cl_T2P1(d) >= (.99*CLE)
+        numpan = d;
+        break
+    end
+end
+hold off;
+figure(r)
+hold on
+b = linspace(3,c,length(Cl_T2P1));
+plot(b,Cl_T2P1,'LineWidth',1.5,'Color','blue');
+yline(CLE(e),LineWidth=1.3)
+xline(numpan)
+ylim([CLE(e)-.1 CLE(e)+.1]);
+xlim([4,c])
+xlabel('Number of Panels');
+ylabel('Lift Coefficient');
+title(['Lift Coefficient vs Number of Panels for ', currentnaca]);
+%Legend
+legend('Lift Coefficient for each number of pannels', 'Exact CL', 'Pannel Number of 1% of Exact CL');
+grid on;
+axis tight
+print(currentnaca,'-dpng','-r300'); 
 end
 
 
 
 
 
-function [XB, YB] = Locations(m,p,t,c,currentnaca,r)
-x = linspace(0,c,100);
+
+
+%% Task 2 part 2
+ a = 1;
+colors = lines(length(NacaStrings)); 
+for j = 1:length(NacaStrings)
+[m,p,t] = AirfoilComps(NacaStrings(j));
+c = 100;
+[XB2,YB2]= Locations(m,p,t,c,currentnaca,r,c,ifplotb);
+for h = 1:length(alpha)
+Cl2(a,h) = Vortex_Panel(XB2,YB2,alpha(h));
+end
+a= a+1;
+end
+for q =1:length(NacaStrings)
+    hold on
+figure(30)
+plot(alpha, Cl2(q,:), 'color', colors(q,:))
+end
+xlabel('Angle of Attack (degrees)');
+ylabel('Lift Coefficient (Cl)');
+title('Lift Coefficient vs Angle of Attack for Various Airfoils');
+yline(0);
+xline(0);
+grid on
+legend1 = legend("NACA 0066","NACA 0012","NACA 0018","","");
+set(legend1,...
+'Position',[0.563654402336621 0.359636302437642 0.117667121418827 0.0799319727891155]);
+fontsize(legend1,20,"points")
+
+Cl4 = Cl2(1,:);
+Cl5 = Cl2(2,:);
+Cl6 = Cl2(3,:);
+% Calculate the lift coefficient for the last airfoil and find the index for the desired lift coefficient
+for s = 1:length(Cl4)
+    if Cl4(s) >= 0
+        disp(Cl4(s))
+        index2 = s;
+        break;
+    end
+end
+
+zlift = alpha(index2);
+xline(zlift,'LineStyle','--')
+
+print("Cl vs Alpha for Various Airfoils",'-dpng','-r300');
+
+
+
+
+
+
+
+
+%% Functions
+
+function [m,p,t,currentnaca] = AirfoilComps(NacaStrings)
+currentnaca = char(NacaStrings);
+m = str2double(currentnaca(6)) / 100;
+p = str2double(currentnaca(7))/ 10;
+t = str2double(currentnaca(8:end)) / 100;
+end
+
+
+function [XB, YB] = Locations(m,p,t,c,currentnaca,r,lin,ifplot)
+x = linspace(0,c,lin);
 yt = (t / 0.2) * c *(0.2969 *sqrt(x/c)- .1260*(x/c)-.3515*(x/c).^2+.2843*(x/c).^3 -.1036*(x/c).^4); 
 for i = 1:length(x) 
     if x(i)<(p*c)
@@ -50,17 +162,21 @@ yl2 = fliplr(yl);
 % Combine upper and lower surfaces into a single array for vortex panel method
 XB = [xl2,xu2]; 
 YB = [yl2,yu2];
-
+str = currentnaca;
+if ifplot == 1
 figure(r)
 hold on;
-plot(XB,YB);
+plot(XB,YB,'LineWidth',1.5,'Color','black');
 plot(x,yc)
 axis equal;
     xlabel('X Coordinate');
     ylabel('Y Coordinate');
     title(currentnaca)
     grid on;
-
+    legend("Airfoil Surface","Camber Line")
+    print(str,'-dpng','-r300');
+hold off;
+end
 end
 
 
