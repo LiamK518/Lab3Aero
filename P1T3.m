@@ -3,7 +3,9 @@ clear
 close all
 
 %% Inputs
-NacaStrings = ["NACA 0012","NACA 2412","NACA 4412"];
+NacaStrings = ["NACA 0006","NACA 0012","NACA 0018"];
+%NacaStrings = ["NACA 0012","NACA 2412","NACA 4412"];
+%NacaStrings = ["NACA 0018","NACA 2418"];
 numberPannels=100;
 c=100;
 alphas=linspace(-6,12,100); %degrees
@@ -27,7 +29,7 @@ for i=1:length(NacaStrings)
 
     %Get NACA details,locations
     [m,p,t,Naca]=AirfoilComps(NacaStrings(i),c);
-    [XB,YB]=Locations(m,p,t,c,Naca,i,numberPannels,0);
+    [XB,YB]=Locations(m,p,t,c,Naca,i,numberPannels,1);
     difference=100;
 
     %Get CL for Alphas
@@ -63,7 +65,7 @@ end
 %Plot Results
 figure
 plot(alphas,Cl)
-title('Cl vs Angle Of Attack Vortex Pannel Method')
+title('Cl vs Angle Of Attack Vortex Panel Method')
 xlabel('\alpha (^{o})')
 ylabel('Cl')
 legend(NacaStrings,'Location','north')
