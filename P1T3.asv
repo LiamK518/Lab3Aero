@@ -3,7 +3,9 @@ clear
 close all
 
 %% Inputs
-NacaStrings = ["NACA 0012","NACA 2412","NACA 4412"];
+%NacaStrings = ["NACA 0006","NACA 0012","NACA 0018"];
+%NacaStrings = ["NACA 0012","NACA 2412","NACA 4412"];
+%NacaStrings = ["NACA 0018","NACA 2418"];
 numberPannels=100;
 c=100;
 alphas=linspace(-6,12,100); %degrees
@@ -47,22 +49,31 @@ for i=1:length(NacaStrings)
     a0(i)=mean(liftSlope);
 
     %alphaL=0 thin airfoil
-    fun1= @(theta) (2*m/p)-(m*(1-cos(theta))/p/p);
-    fun2= @(theta) (m/((1-p)^2))*((2*p)-1+cos(theta));
-    intBreak=arccos(1-(2*p));
-    alphaL0thin(i)=(-1/pi)*
+    fun1= @(theta) ((2*m/p)-(m*(1-cos(theta))/p/p)).*(cos(theta)-1);
+    fun2= @(theta) ((m/((1-p)^2))*((2*p)-1+cos(theta))).*(cos(theta)-1);
+    intBreak=acos(1-(2*p));
+    if intBreak==0
+        alphaL0thin(i)=(-1/pi)*(integral(fun2,intBreak,pi))*(180/pi);
+    else
+        alphaL0thin(i)=(-1/pi)*(integral(fun1,0,intBreak)+integral(fun2,intBreak,pi))*(180/pi);
+    end
+
+    %a0 thin airfoil
+    a0thin(i)=2*pi*pi/180;
 end
 
 %Plot Results
 figure
 plot(alphas,Cl)
-title('Cl vs Angle Of Attack Vortex Pannel Method')
+title('Cl vs Angle Of Attack Vortex Panel Method')
 xlabel('\alpha (^{o})')
 ylabel('Cl')
 legend(NacaStrings,'Location','north')
-
-%% Find alphaL=0, a0 From Thin Airfoil
-
+print('CLAOAVortexPannel','-dpng','-r300');
+a0
+a0thin
+alphaL0
+alphaL0thin
 
 %% Functions
 function [m,p,t,currentnaca] = AirfoilComps(NacaStrings,c)

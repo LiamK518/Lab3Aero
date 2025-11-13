@@ -3,7 +3,7 @@ clear
 close all
 
 %% Inputs
-NacaStrings = ["NACA 0006","NACA 0012","NACA 0018"];
+%NacaStrings = ["NACA 0006","NACA 0012","NACA 0018"];
 %NacaStrings = ["NACA 0012","NACA 2412","NACA 4412"];
 %NacaStrings = ["NACA 0018","NACA 2418"];
 numberPannels=100;
