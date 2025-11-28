@@ -65,7 +65,7 @@ xline(numpan, 'Color',' magenta','LineWidth',1.5);
 yline(.99*CLE, 'Color', 'Red', 'LineStyle','--')
 annotation('textbox',...
     [0.467427840327533 0.639455782312925 0.0624595701125896 0.0731292517006785],...
-    'String','76 Panels',...
+    'String','269 Panels',...
     'FitBoxToText','off');
 
 ylim([CLE(e)-.1 CLE(e)+.1]);
@@ -90,7 +90,7 @@ end
 
 %% Task 2 part 2
 a = 1;
-NacaStringT2P2 = ["NACA 4412","NACA 2012","NACA 0012"];
+NacaStringT2P2 = ["NACA 0006","NACA 0012","NACA 0018"];
 colors = lines(length(NacaStringT2P2)); 
 for v = 1:length(NacaStringT2P2)
 [m,p,t,currentnaca] = AirfoilComps(NacaStringT2P2(v));
@@ -188,6 +188,7 @@ yu2 = yu(2:end);
 xl2 = fliplr(xl);
 yl2 = fliplr(yl);
 
+% Combine: lower surface (TE→LE) + upper surface (LE→TE, without TE point)
 XB = [xl2, xu2]; 
 YB = [yl2, yu2];
 
