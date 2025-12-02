@@ -12,13 +12,13 @@ q = interp1(x,y,xi,"linear");
 hold on;
 plot(xi,q);
 hold off
-x2 = CLVSCD.data(:,1);
-y2 = CLVSCD.data(:,2);
-xi2 = linspace(min(x2),max(x2),10000);
-q2= interp1(x2,y2,xi2);
+cl = CLVSCD.data(:,1);
+cd = CLVSCD.data(:,2);
+cl_lin = linspace(min(cl),max(cl),10000);
+cdinterp= interp1(cl,cd,cl_lin);
 figure(2)
 hold on;
-plot(xi2,q2);
+plot(cl_lin,cdinterp);
 
 alpha = linspace(-15,12,length(y2));
 cd_at_alpha = interp1(x2, y2, y, 'spline');
@@ -34,5 +34,5 @@ plot(x, cd_at_alpha, 'b-o', 'LineWidth', 1.5, 'MarkerSize', 6);
 xlabel('Alpha (degrees)');
 ylabel('CD');
 title('Alpha vs CD');
-xlim([-15 15])
+xlim([-10 10])
 grid on;
