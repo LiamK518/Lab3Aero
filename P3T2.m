@@ -4,14 +4,20 @@ clear;
 
 %clvsalpha
 data = load('Data.mat');
-CLVSCD = load('CLVSCD.mat');
-x = data.data(1:25,1)';
-y = data.data(1:25,2)';
-xi = linspace(min(x),max(x),10000);
-q = interp1(x,y,xi,"linear");
+CLVSCD = load('Clvscd2.mat');
+
+%alpha
+alpha1 = data.data(1:24,1)';
+%cl
+cl_1 = data.data(1:24,2)';
+%alpha linspaced
+alpha_lin1 = linspace(min(alpha1),max(alpha1),10000);
+%interp cl values for alpha
+clinterp = interp1(alpha1,cl_1,alpha_lin1,"linear");
 hold on;
-plot(xi,q);
+plot(alpha_lin1,clinterp);
 hold off
+
 cl = CLVSCD.data(:,1);
 cd = CLVSCD.data(:,2);
 cl_lin = linspace(min(cl),max(cl),10000);
@@ -20,17 +26,17 @@ figure(2)
 hold on;
 plot(cl_lin,cdinterp);
 
-alpha = linspace(-15,12,length(y2));
-cd_at_alpha = interp1(x2, y2, y, 'spline');
-p = polyfit(alpha,y2,3);
-alpha2 = linspace(min(x),max(x), 100);
+alpha = linspace(-15,12,length(cd));
+cd_at_alpha = interp1(cl, cd, cl, 'spline');
+p = polyfit(alpha,cd,3);
+alpha2 = linspace(min(alpha1),max(alpha1), 100);
 cd_at_alpha_interp = polyval(p, alpha2);
 figure;
 hold on;
 plot(alpha2,cd_at_alpha_interp)
 
 % Now plot alpha vs CD
-plot(x, cd_at_alpha, 'b-o', 'LineWidth', 1.5, 'MarkerSize', 6);
+plot(alpha, cd_at_alpha, 'b-o', 'LineWidth', 1.5, 'MarkerSize', 6);
 xlabel('Alpha (degrees)');
 ylabel('CD');
 title('Alpha vs CD');
