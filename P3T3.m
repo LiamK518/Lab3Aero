@@ -2,6 +2,18 @@ clc
 clear
 close all
 
+%Default figure settings
+set(0, 'defaultFigureUnits', 'inches', 'defaultFigurePosition', [1 1 8 5]);
+% figures are 8" wide and 5" tall, with the bottom left corner of the figure beginning 1" up, and 1" to the right from the bottom left corner of your screen -- adjust the size of the figure to your liking
+set(0,'defaultLineLineWidth',2.5) % sets all line widths of plotted lines
+set(0,'DefaultaxesLineWidth', 1.5) % sets line widths of axes
+set(0,'DefaultaxesFontSize', 14)
+set(0,'DefaultTextFontSize', 14)
+set(0,'DefaultaxesFontName', 'Times new Roman')
+set(0,'DefaultlegendFontName', 'Times new Roman')
+set(0,'defaultAxesXGrid','on')
+set(0,'defaultAxesYGrid','on')
+
 %% P3T1 
 addpath(genpath("./Darpan PLLT/"));
 %Cessna 180
