@@ -8,35 +8,54 @@ CLVSCD = load('Clvscd2.mat');
 
 %alpha
 alpha1 = data.data(1:24,1)';
+
 %cl
 cl_1 = data.data(1:24,2)';
+
 %alpha linspaced
 alpha_lin1 = linspace(min(alpha1),max(alpha1),10000);
+
 %interp cl values for alpha
 clinterp = interp1(alpha1,cl_1,alpha_lin1,"linear");
 hold on;
 plot(alpha_lin1,clinterp);
 hold off
+%% CL vs CD Data 
 
-cl = CLVSCD.data(:,1);
-cd = CLVSCD.data(:,2);
+cl = CLVSCD.data(:,1)';
+cd = CLVSCD.data(:,2)';
+%Linspace the cl values 
 cl_lin = linspace(min(cl),max(cl),10000);
+
+%Interp CD values using cl_lin
 cdinterp= interp1(cl,cd,cl_lin);
 figure(2)
 hold on;
+
+%Plot of CL vs CD
 plot(cl_lin,cdinterp);
 
-alpha = linspace(-15,12,length(cd));
-cd_at_alpha = interp1(cl, cd, cl, 'spline');
-p = polyfit(alpha,cd,3);
-alpha2 = linspace(min(alpha1),max(alpha1), 100);
-cd_at_alpha_interp = polyval(p, alpha2);
+
+
+%Find cd at values of alpha Using cl cd and cl that was used for cl vs alpha 
+cd_at_alpha = interp1(cl, cd, cl_1, 'spline');
+
+%New alpha to match size of cd
+alpha2 = linspace(min(alpha1),max(alpha1),length(cd));
+
+%Find coefficents of variables 
+p = polyfit(alpha2,cd,3);
+
+
+%New alpha for smooth curve
+alpha3 = linspace(min(alpha1),max(alpha1), 100);
+cd_at_alpha_interp = polyval(p, alpha3);
+
 figure;
 hold on;
-plot(alpha2,cd_at_alpha_interp)
-
+plot(alpha3,cd_at_alpha_interp)
 % Now plot alpha vs CD
-plot(alpha, cd_at_alpha, 'b-o', 'LineWidth', 1.5, 'MarkerSize', 6);
+plot(alpha1, cd_at_alpha, 'b-o', 'LineWidth', 1.5, 'MarkerSize', 6);
 xlabel('Alpha (degrees)');
 ylabel('CD');
 title('Alpha vs CD');
