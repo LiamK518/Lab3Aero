@@ -111,9 +111,7 @@ legend('Induced Drag','Profile Drag','Total Drag','Location','best')
 title('Drag Components vs AoA For Cessna 180')
 xlabel('Angle of Attack (degrees)')
 ylabel('Drag Coefficient Magnitude')
-<<<<<<< HEAD
 print('Drag Components','-dpng','-r300');
-=======
 totalDrag=c_Di+(cdo);
 
 %% P3T4
@@ -131,11 +129,7 @@ plot(velocities/1.68781,ReqT)
 title('Thrust Required vs Velocity for Cessna 180')
 xlabel('Velocity (knots)')
 ylabel('Thrust Required (lbs)')
-<<<<<<< Updated upstream
->>>>>>> fa0b06cf09c1de0af71ae4a71ca7138496b3c75b
-=======
 
 [minReqT,index]=min(ReqT);
 minSpeed=velocities(index)/1.68781
 minReqT
->>>>>>> Stashed changes
