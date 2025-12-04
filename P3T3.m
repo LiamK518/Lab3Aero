@@ -79,7 +79,7 @@ cd_at_alpha = interp1(cl, cd, cl_1, 'spline');
 alpha2 = linspace(min(alpha1),max(alpha1),length(cd));
 
 %Find coefficents of variables 
-p = polyfit(alpha2,cd,3);
+p = polyfit(alpha1,cd_at_alpha,3);
 
 
 %New alpha for smooth curve
@@ -111,24 +111,64 @@ legend('Induced Drag','Profile Drag','Total Drag','Location','best')
 title('Drag Components vs AoA For Cessna 180')
 xlabel('Angle of Attack (degrees)')
 ylabel('Drag Coefficient Magnitude')
-<<<<<<< HEAD
 print('Drag Components','-dpng','-r300');
-=======
+
 totalDrag=c_Di+(cdo);
 
 %% P3T4
-w=2500; %lb
-rho=0.001756;%slug/ft3
-area=160.5;%ft^2
-velocities=linspace(0,1000,1000); %ft/s
-ReqCL=w.*2./rho./velocities./velocities./area;
-ReqAoA=interp1(c_L,alphast*180/pi,ReqCL);
-ReqCD=interp1(alphast*180/pi,totalDrag,ReqAoA);
-ReqT=ReqCD.*area.*velocities.*velocities.*rho./2;
+% w=2500; %lb
+% rho=0.001756;%slug/ft3
+% area=160.5;%ft^2
+% velocities=linspace(0,1000,1000); %ft/s
+% ReqCL=w.*2./rho./velocities./velocities./area;
+% ReqAoA=interp1(c_L,alphast*180/pi,ReqCL);
+% ReqCD=interp1(alphast*180/pi,totalDrag,ReqAoA);
+% ReqT=ReqCD.*area.*velocities.*velocities.*rho./2;
 
+w = 2500;              % weight [lb]
+rho = 0.001756;        % density [slug/ft^3]
+area = 160.5;          % wing area [ft^2]
+
+% Start velocities slightly above 0 to avoid division by zero
+velocities = linspace(10, 1000, 1000);  % ft/s (start at 10, not 0)
+
+% Required lift coefficient for level flight
+ReqCL = (w * 2) ./ (rho * velocities.^2 * area);
+
+% Required angle of attack
+% Make sure c_L and alphast are your actual variable names
+ReqAoA = interp1(c_L, alphast*180/pi, ReqCL, 'linear', 'extrap');
+
+% Required drag coefficient  
+ReqCD = interp1(alphast*180/pi, totalDrag, ReqAoA, 'linear', 'extrap');
+
+% Required thrust
+ReqT = 0.5 * ReqCD * area * rho .* velocities.^2;
+
+% Plot results
+figure;
+subplot(2,2,1);
+plot(velocities, ReqCL);
+xlabel('Velocity [ft/s]'); ylabel('Required C_L');
+title('Required Lift Coefficient'); grid on;
+
+subplot(2,2,2);
+plot(velocities, ReqAoA);
+xlabel('Velocity [ft/s]'); ylabel('Required AoA [deg]');
+title('Required Angle of Attack'); grid on;
+
+subplot(2,2,3);
+plot(velocities, ReqCD);
+xlabel('Velocity [ft/s]'); ylabel('Required C_D');
+title('Required Drag Coefficient'); grid on;
+
+subplot(2,2,4);
+plot(velocities, ReqT);
+xlabel('Velocity [ft/s]'); ylabel('Required Thrust [lb]');
+title('Thrust Required'); grid on;
 figure
 plot(velocities/1.68781,ReqT)
 title('Thrust Required vs Velocity for Cessna 180')
 xlabel('Velocity (knots)')
 ylabel('Thrust Required (lbs)')
->>>>>>> fa0b06cf09c1de0af71ae4a71ca7138496b3c75b
+
