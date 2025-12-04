@@ -131,4 +131,11 @@ plot(velocities/1.68781,ReqT)
 title('Thrust Required vs Velocity for Cessna 180')
 xlabel('Velocity (knots)')
 ylabel('Thrust Required (lbs)')
+<<<<<<< Updated upstream
 >>>>>>> fa0b06cf09c1de0af71ae4a71ca7138496b3c75b
+=======
+
+[minReqT,index]=min(ReqT);
+minSpeed=velocities(index)/1.68781
+minReqT
+>>>>>>> Stashed changes
