@@ -116,7 +116,7 @@ totalDrag=c_Di+(cdo);
 %% P3T4
 w=2500; %lb
 rho=0.001756;%slug/ft3
-area=160.5;%ft^2
+area=
 velocities=linspace(0,1000,1000); %ft/s
 ReqCL=w.*2./rho./velocities./velocities./area;
 ReqAoA=interp1(c_L,alphast*180/pi,ReqCL);
