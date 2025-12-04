@@ -111,4 +111,24 @@ legend('Induced Drag','Profile Drag','Total Drag','Location','best')
 title('Drag Components vs AoA For Cessna 180')
 xlabel('Angle of Attack (degrees)')
 ylabel('Drag Coefficient Magnitude')
+<<<<<<< HEAD
 print('Drag Components','-dpng','-r300');
+=======
+totalDrag=c_Di+(cdo);
+
+%% P3T4
+w=2500; %lb
+rho=0.001756;%slug/ft3
+area=160.5;%ft^2
+velocities=linspace(0,1000,1000); %ft/s
+ReqCL=w.*2./rho./velocities./velocities./area;
+ReqAoA=interp1(c_L,alphast*180/pi,ReqCL);
+ReqCD=interp1(alphast*180/pi,totalDrag,ReqAoA);
+ReqT=ReqCD.*area.*velocities.*velocities.*rho./2;
+
+figure
+plot(velocities/1.68781,ReqT)
+title('Thrust Required vs Velocity for Cessna 180')
+xlabel('Velocity (knots)')
+ylabel('Thrust Required (lbs)')
+>>>>>>> fa0b06cf09c1de0af71ae4a71ca7138496b3c75b
