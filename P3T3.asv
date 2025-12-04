@@ -37,10 +37,9 @@ plot(alphast*180/pi,c_L)
 title('CL vs AoA For Cessna 180')
 xlabel('Angle of Attack (degrees)')
 ylabel('CL')
-print('CLvAoA','-dpng','-r300');
-
 
 %% P3T2
+figure
 %clvsalpha
 data = load('Data.mat');
 CLVSCD = load('Clvscd2.mat');
@@ -56,7 +55,9 @@ alpha_lin1 = linspace(min(alpha1),max(alpha1),10000);
 
 %interp cl values for alpha
 clinterp = interp1(alpha1,cl_1,alpha_lin1,"linear");
-
+hold on;
+plot(alpha_lin1,clinterp);
+hold off
 % CL vs CD Data 
 
 cl = CLVSCD.data(:,1)';
@@ -66,9 +67,11 @@ cl_lin = linspace(min(cl),max(cl),10000);
 
 %Interp CD values using cl_lin
 cdinterp= interp1(cl,cd,cl_lin);
+figure
+hold on;
 
 %Plot of CL vs CD
-
+plot(cl_lin,cdinterp);
 
 
 
@@ -86,19 +89,17 @@ p = polyfit(alpha2,cd,3);
 alpha3 = linspace(min(alpha1),max(alpha1), 100);
 cd_at_alpha_interp = polyval(p, alpha3);
 
-figure
+figure;
+hold on;
 plot(alpha3,cd_at_alpha_interp)
-hold on
-xlim([-10 10])
 % Now plot alpha vs CD
-plot(alpha1, cd_at_alpha, 'b-o', 'LineWidth', 1.5, 'MarkerSize', 6)
-legend( 'Mathmatical Model','Experimental Data', Location='best')
-title('Sectional Drag Coefficent vs Alpha Models')
-xlabel('Angle of Attack (degrees)')
-ylabel('Sectional Drag Coefficent')
-print('SecDvAoAModel','-dpng','-r300');
-
-grid on
+plot(alpha1, cd_at_alpha, 'b-o', 'LineWidth', 1.5, 'MarkerSize', 6);
+xlabel('Alpha (degrees)');
+ylabel('CD');
+title('Alpha vs CD');
+legend('')
+xlim([-10 10])
+grid on;
 
 %% P3T3
 figure
@@ -108,7 +109,6 @@ cdo= interp1(alpha3,cd_at_alpha_interp,alphast*180/pi,'linear','extrap');
 plot(alphast*180/pi,cdo)
 plot(alphast*180/pi,c_Di+cdo)
 legend('Induced Drag','Profile Drag','Total Drag','Location','best')
-title('Drag Components vs AoA For Cessna 180')
+title('CD vs AoA For Cessna 180')
 xlabel('Angle of Attack (degrees)')
 ylabel('Drag Coefficient Magnitude')
-print('Drag Components','-dpng','-r300');

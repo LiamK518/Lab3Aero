@@ -44,7 +44,7 @@ cd_at_alpha = interp1(cl, cd, cl_1, 'spline');
 alpha2 = linspace(min(alpha1),max(alpha1),length(cd));
 
 %Find coefficents of variables 
-p = polyfit(alpha2,cd,3);
+p = polyfit(alpha2,cd,6);
 
 
 %New alpha for smooth curve
