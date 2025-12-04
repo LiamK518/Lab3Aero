@@ -112,7 +112,10 @@ title('Drag Components vs AoA For Cessna 180')
 xlabel('Angle of Attack (degrees)')
 ylabel('Drag Coefficient Magnitude')
 print('Drag Components','-dpng','-r300');
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5372d200e6be9dceca18a9e0806e7e876fe74671
 totalDrag=c_Di+(cdo);
 
 %% P3T4
@@ -172,3 +175,9 @@ title('Thrust Required vs Velocity for Cessna 180')
 xlabel('Velocity (knots)')
 ylabel('Thrust Required (lbs)')
 
+<<<<<<< HEAD
+=======
+[minReqT,index]=min(ReqT);
+minSpeed=velocities(index)/1.68781
+minReqT
+>>>>>>> 5372d200e6be9dceca18a9e0806e7e876fe74671
